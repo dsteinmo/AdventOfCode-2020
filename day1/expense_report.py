@@ -10,6 +10,7 @@ def max_product_of_two_numbers_2020():
     products = []
 
     # Find all products that add to 2020.
+    # O(n^2) nested-loop.
     for i in range(len(numbers)):
         for j in range(len(numbers)):
             if i == j:
@@ -22,10 +23,27 @@ def max_product_of_two_numbers_2020():
     max_product = np.max(products)
     print(f"max is {max_product}")
 
+def max_product_of_two_numbers_2020_optim(target_sum = 2020):
+    numbers_set = set(numbers)
+    max_product = 0
+    # O(n)
+    for num in numbers:
+        complement = target_sum - num
+        if complement in numbers_set: # O(1) hashset look-up.
+            product = num * complement
+            if product > max_product:
+                max_product = product
+
+    print(f"max is {max_product}")
+
+
+
+
 def max_product_of_three_numbers_2020():
     products = []
 
     # Find all products of three that add to 2020.
+    # O(n^3) triply-nested loop.
     for i in range(len(numbers)):
         for j in range(len(numbers)):
             if i == j:
@@ -42,10 +60,32 @@ def max_product_of_three_numbers_2020():
     print(f"max is {max_product}")
 
 
+def max_product_of_three_numbers_2020_optim():
+    numbers_set = set(numbers)
+    max_product = 0
+
+    # Overall complexity: O(n^2)
+
+    # O(n) loop
+    for first in numbers:
+        complement = 2020 - first
+        # looking for two numbers in set that add to complement
+        # O(n)
+        for second in [n for n in numbers if n != first]:
+            third = complement - second
+            if third in numbers_set: # O(1) look-up
+                product = first*second*third
+                if product > max_product:
+                    max_product = product
+
+    print(f"max is {max_product}")
+
 if __name__ == "__main__":
     print("Day 1")
     print("=====")
     print("Part 1:")
+    max_product_of_two_numbers_2020_optim()
     max_product_of_two_numbers_2020()
     print("Part 2:")
+    max_product_of_three_numbers_2020_optim()
     max_product_of_three_numbers_2020()
